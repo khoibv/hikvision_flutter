@@ -26129,7 +26129,7 @@ typedef struct tagNET_DVR_VOD_PARA
     NET_DVR_STREAM_INFO struIDInfo;
     NET_DVR_TIME        struBeginTime;
     NET_DVR_TIME        struEndTime;
-    HWND                hWnd;
+    UIView                *hWnd;
     BYTE                byDrawFrame;
     BYTE                byVolumeType;  //0-common volume   1-backup volme
     BYTE                byVolumeNum;  //backup volme number

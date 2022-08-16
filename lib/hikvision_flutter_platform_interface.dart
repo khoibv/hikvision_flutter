@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'hikvision_flutter_method_channel.dart';
+import 'platform_communication.dart';
 
 abstract class HikvisionFlutterPlatform extends PlatformInterface {
   /// Constructs a HikvisionFlutterPlatform.
@@ -28,16 +29,36 @@ abstract class HikvisionFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<bool?> initSdk() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<AccsResponse> initSdk() {
+    throw UnimplementedError('initSdk() has not been implemented.');
   }
 
-  Future<Map<String, int>?> login(
+  Future<AccsResponse> login(
       String username, String pass, String ip, String port) {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('login() has not been implemented.');
   }
 
   Widget cameraView(String userID, String startChan) {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('cameraView() has not been implemented.');
+  }
+
+  Future<AccsResponse> startLive() {
+    throw UnimplementedError('startLive() has not been implemented.');
+  }
+
+  Future<AccsResponse> stopLive() {
+    throw UnimplementedError('stopLive() has not been implemented.');
+  }
+
+  Future<AccsResponse> startPlayback(PlaybackRequest request) {
+    throw UnimplementedError('startPlayback() has not been implemented.');
+  }
+
+  Future<AccsResponse> pausePlayback() {
+    throw UnimplementedError('pausePlayback() has not been implemented.');
+  }
+
+  Future<AccsResponse> resumePlayback() {
+    throw UnimplementedError('resumePlayback() has not been implemented.');
   }
 }

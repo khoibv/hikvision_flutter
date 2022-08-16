@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:hikvision_flutter/platform_communication.dart';
 
 import 'hikvision_flutter_platform_interface.dart';
 
@@ -7,33 +8,39 @@ import 'hikvision_flutter_platform_interface.dart';
 class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('hikvision_flutter');
+  final sdk = HikvisionSdk();
+  // final methodChannel = const MethodChannel('hikvision_flutter');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
-
-  @override
-  Future<bool?> initSdk() async {
-    final result = await methodChannel.invokeMethod<bool>('initSdk');
+  Future<AccsResponse> initSdk() async {
+    // final result = await methodChannel.invokeMethod<bool>('initSdk');
+    var result = await sdk.initialize();
+    // var logContent = jsonEncode(result);
+    print(
+        'initialized, result {status: ${result.status}, errorMessage: ${result.errorMessage}}');
     return result;
   }
 
   @override
-  Future<Map<String, int>?> login(
+  Future<AccsResponse> login(
       String username, String pass, String ip, String port) async {
-    final result = await methodChannel.invokeMethod<Map>('login',
-        {"username": username, "password": pass, "ip": ip, "port": port});
-    Map<String, int> map = Map.from(result!);
-    return map;
+    print('Starting login with $username:$pass@$ip:$port');
+    var result = await sdk.login(LoginRequest(
+      ip: ip,
+      port: int.parse(port),
+      username: username,
+      password: pass,
+      channelNo: 0,
+    ));
+
+    // Map<String, int> map = {};
+    return result;
   }
 
   @override
   Widget cameraView(String userID, String startChan) {
-    const String viewType = '<platform-view-type>';
+    const String viewType =
+        'vn.zensho.hikvision.hikvision_flutter.platformView';
     // Pass parameters to the platform side.
     final Map<String, dynamic> creationParams = <String, dynamic>{};
     creationParams['userId'] = userID;
@@ -44,5 +51,38 @@ class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
       creationParams: creationParams,
       creationParamsCodec: const StandardMessageCodec(),
     );
+  }
+
+  @override
+  Future<AccsResponse> startLive() async {
+    print('Starting live');
+    return await sdk.startLive();
+  }
+
+  @override
+  Future<AccsResponse> stopLive() async {
+    print('Stopping live');
+
+    return await sdk.stopLive();
+  }
+
+  @override
+  Future<AccsResponse> startPlayback(PlaybackRequest request) async {
+    print('Starting playback');
+    return await sdk.startPlayback(request);
+  }
+
+  @override
+  Future<AccsResponse> pausePlayback() async {
+    print('Pause playback');
+
+    return await sdk.pausePlayback();
+  }
+
+  @override
+  Future<AccsResponse> resumePlayback() async {
+    print('Resume playback');
+
+    return await sdk.resumePlayback();
   }
 }

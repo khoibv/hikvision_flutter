@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:hikvision_flutter/hikvision_flutter.dart';
+import 'package:hikvision_flutter/platform_communication.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _loginState = 'Unknown';
   bool isLogin = false;
+  bool isPlaying = false;
+  bool isPlaybackStarted = false;
   String userID = "";
   String startChan = "";
   final _hikvisionFlutterPlugin = HikvisionFlutter();
@@ -50,7 +53,59 @@ class _MyAppState extends State<MyApp> {
         body: Stack(
           children: [
             isLogin
-                ? _hikvisionFlutterPlugin.cameraView(userID, startChan)
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      border: Border.all(
+                        width: 2,
+                        color: Colors.red,
+                      ),
+                    ),
+                    constraints: const BoxConstraints.expand(height: 300),
+                    child: Column(children: [
+                      Expanded(
+                          child: _hikvisionFlutterPlugin.cameraView(
+                              userID, startChan)),
+                      TextButton(
+                        onPressed: () async {
+                          if (!isPlaying) {
+                            // STOP => PLAY
+                            if (!isPlaybackStarted) {
+                              var result = await _hikvisionFlutterPlugin
+                                  .startPlayback(PlaybackRequest(
+                                      timeFrom: '2022/08/15 10:00:00',
+                                      timeTo: '2022/08/15 12:00:00'));
+                              if (result.status == 'OK') {
+                                setState(() {
+                                  isPlaying = true;
+                                  isPlaybackStarted = true;
+                                });
+                              }
+                            } else {
+                              // PAUSE => RESUME
+                              var result = await _hikvisionFlutterPlugin
+                                  .resumePlayback();
+                              if (result.status == 'OK') {
+                                isPlaying = true;
+                              }
+                            }
+                          } else {
+                            // PLAY => STOP
+                            var result =
+                                await _hikvisionFlutterPlugin.pausePlayback();
+                            if (result.status == 'OK') {
+                              setState(() {
+                                isPlaying = false;
+                              });
+                            }
+                          }
+                        },
+                        child: isPlaying
+                            ? const Text('Stop playback')
+                            : const Text('Start playback'),
+                      ),
+                    ]),
+                  )
                 : Container(),
             !isLogin
                 ? Container(
@@ -85,10 +140,10 @@ class _MyAppState extends State<MyApp> {
                                   ipController.text,
                                   portController.text);
                               setState(() {
-                                if (result != null && result.isNotEmpty) {
+                                if (result.status == 'OK') {
                                   _loginState = "Login success";
-                                  userID = result["userID"].toString();
-                                  startChan = result["startChan"].toString();
+                                  // userID = result["userID"].toString();
+                                  // startChan = result["startChan"].toString();
                                   isLogin = true;
                                 } else {
                                   _loginState = "Login fail";

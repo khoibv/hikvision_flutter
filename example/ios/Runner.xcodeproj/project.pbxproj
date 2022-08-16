@@ -356,7 +356,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision_flutter_dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision-flutter-dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -481,7 +481,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision_flutter_dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision-flutter-dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -501,7 +501,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision_flutter_dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "vn.zensho.hikvision.hikvision-flutter-dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_WORKSPACE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
