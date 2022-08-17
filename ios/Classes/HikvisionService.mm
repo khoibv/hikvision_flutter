@@ -227,7 +227,7 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
     int iIndex = 0;
     
     NSLog(@"Playback starting ...");
-
+    
     NET_DVR_TIME struStartTime = [self _convertStringToCameraDateTime:request.timeFrom];
     NET_DVR_TIME struEndTime = [self _convertStringToCameraDateTime:request.timeTo];
     
@@ -236,7 +236,7 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
     struPlaybackInfo.hWnd = [self platformView]; // TODO: how to keep multiple instance of players???
     struPlaybackInfo.struBeginTime = struStartTime;
     struPlaybackInfo.struEndTime = struEndTime;
-
+    
     
     int m_lPlaybackID = NET_DVR_PlayBackByTime_V40(_currentUserID, &struPlaybackInfo);
     if (m_lPlaybackID == -1)
@@ -245,14 +245,14 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
         
         return [HikvisionService setErrorResponse:completion];
     }
-
+    
     if (!NET_DVR_PlayBackControl_V40(m_lPlaybackID, NET_DVR_PLAYSTART, NULL, 0, NULL, NULL))
     {
         NSLog(@"NET_DVR_PLAYSTART failed:%d",  NET_DVR_GetLastError());
         return [HikvisionService setErrorResponse:completion];
     }
     else{
-        NSLog(@"NET_DVR_PLAYSTART succ");
+        NSLog(@"NET_DVR_PLAYSTART success");
     }
     
     g_structHandle[iIndex].playbackHandleId = m_lPlaybackID;
@@ -291,14 +291,170 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
 }
 
 - (void)refreshPlayback:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)getPlaybackSnapshot:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)playPlaybackFast:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)playPlaybackSlow:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)playPlaybackNormalSpeed:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)openPlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)closePlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)setPlaybackVolume:(NSNumber *)volumePercent completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
-- (void)searchPlaybackFilesInRange:(NSString *)fromTime to:(NSString *)toTime completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {}
+- (void)getPlaybackSnapshot:(SnapshotRequest *)request completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    
+    DWORD mode = [request.imageType isEqualToString:@"jpg"] ? (DWORD)1 : 0;
+    if (!NET_DVR_SetCapturePictureMode(mode))
+    {
+        NSLog(@"NET_DVR_SetCapturePictureMode failed:%d", NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    
+    char *outputFullPath = (char *) [request.outputPath UTF8String];
+    if (!NET_DVR_PlayBackCaptureFile(playbackHandleId, outputFullPath))
+    {
+        NSLog(@"NET_DVR_PlayBackCaptureFile failed:%d", NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)playPlaybackFast:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYFAST, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYFAST failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYFAST success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)playPlaybackSlow:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYSLOW, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYSLOW failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYSLOW success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)playPlaybackNormalSpeed:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYNORMAL, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYNORMAL failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYNORMAL success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)openPlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYSTARTAUDIO, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYSTARTAUDIO failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYSTARTAUDIO success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)closePlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYSTOPAUDIO, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYSTOPAUDIO failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYSTOPAUDIO success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+- (void)setPlaybackVolume:(NSNumber *)volumePercent completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    int iIndex = 0;
+    int playbackHandleId = g_structHandle[iIndex].playbackHandleId;
+    if (!NET_DVR_PlayBackControl_V40(playbackHandleId , NET_DVR_PLAYAUDIOVOLUME, NULL, 0, NULL, NULL))
+    {
+        NSLog(@"NET_DVR_PLAYSTOPAUDIO failed:%d",  NET_DVR_GetLastError());
+        return [HikvisionService setErrorResponse:completion];
+    }
+    else{
+        NSLog(@"NET_DVR_PLAYSTOPAUDIO success");
+    }
+    
+    return [HikvisionService setSuccessResponse:completion];
+}
+
+- (void)searchPlaybackFilesInRange:(SearchRequest *)request completion:(void(^)(SearchResponse *_Nullable, FlutterError *_Nullable))completion {
+    //- (void)searchPlaybackFilesInRange:(SearchRequest *)request completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion {
+    NET_DVR_FILECOND    struFileCond = {0};
+    struFileCond.lChannel = _iStartChan;
+    struFileCond.dwFileType = 0xff; // 0xff - all
+    struFileCond.struStartTime = [self _convertStringToCameraDateTime:request.timeFrom];
+    struFileCond.struStopTime = [self _convertStringToCameraDateTime:request.timeTo];
+    
+    int nRet = -1;
+    int nFindHandle = NET_DVR_FindFile_V30(_currentUserID, &struFileCond);
+    NET_DVR_FINDDATA_V30 struFindData = {0};
+    if(nFindHandle >= 0)
+    {
+        NSMutableArray<MatchItem *> *matchList = [[NSMutableArray<MatchItem*> alloc] init];
+        while(true)
+        {
+            nRet = NET_DVR_FindNextFile_V30(nFindHandle, &struFindData);
+            if (nRet != NET_DVR_FILE_SUCCESS && nRet != NET_DVR_ISFINDING)
+            {
+                break;
+            }
+            else if(nRet == NET_DVR_FILE_SUCCESS)
+            {
+                NSString* startTime = [self _convertCameraDateTimeToString:struFindData.struStartTime];
+                NSString* stopTime = [self _convertCameraDateTimeToString:struFindData.struStopTime];
+                MatchItem* matchItem = [MatchItem makeWithFrom:startTime
+                                                            to:stopTime
+                                                      filename:[NSString stringWithUTF8String:struFindData.sFileName]
+                                                      filesize:@(struFindData.dwFileSize)];
+                [matchList addObject:matchItem];
+//                NSLog(@"find file[%s], time range: %@-%@, size: %d (bytes)"
+//                      , struFindData.sFileName
+//                      , startTime
+//                      , stopTime
+//                      , struFindData.dwFileSize);
+                
+            }
+        }
+        NSLog(@"find next with[%d]", nRet);
+        NET_DVR_FindClose_V30(nFindHandle);
+        
+        SearchResponse *result = [SearchResponse alloc];
+        [result setStatus:@"OK"];
+        [result setMatchList:matchList];
+        completion(result, nil);
+    }
+    else
+    {
+        NSLog(@"NET_DVR_FindFile_V30 failed with[%d]", NET_DVR_GetLastError());
+        SearchResponse *result = [SearchResponse alloc];
+        
+        LONG errCode = NET_DVR_GetLastError();
+        NSString* errMessage = [HikvisionService getLastDeviceError];
+        [result setStatus:@"NG"];
+        [result setErrorMessage:errMessage];
+        
+        completion(result, [FlutterError errorWithCode:[NSString stringWithFormat:@"%d", errCode] message:errMessage details:nil]);
+    }
+}
 
 
 
@@ -327,7 +483,7 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
     NSDate *date = [self _convertStringToDate:datetimeString];
     
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:date];
-
+    
     NET_DVR_TIME cameraDateTime = {0};
     cameraDateTime.dwYear = components.year;
     cameraDateTime.dwMonth = components.month;
@@ -339,5 +495,10 @@ int _iStartChan = 0; // some device have startChan number, what is starting numb
     return cameraDateTime;
 }
 
+
+-(NSString*) _convertCameraDateTimeToString:(NET_DVR_TIME)datetime {
+    
+    return [NSString stringWithFormat:@"%d/%02d/%02d %02d:%02d:%02d", datetime.dwYear, datetime.dwMonth, datetime.dwDay, datetime.dwHour, datetime.dwMinute, datetime.dwSecond];
+}
 
 @end

@@ -17,8 +17,8 @@ class HikvisionFlutter {
     return HikvisionFlutterPlatform.instance.login(username, pass, ip, port);
   }
 
-  Widget cameraView(String userID, String startChan) {
-    return HikvisionFlutterPlatform.instance.cameraView(userID, startChan);
+  Widget initCamera() {
+    return HikvisionFlutterPlatform.instance.initCamera();
   }
 
   Future<AccsResponse> startLive() {
@@ -38,6 +38,53 @@ class HikvisionFlutter {
   }
 
   Future<AccsResponse> resumePlayback() {
-    return HikvisionFlutterPlatform.instance.pausePlayback();
+    return HikvisionFlutterPlatform.instance.resumePlayback();
+  }
+
+  Future<AccsResponse> refreshPlayback() {
+    return HikvisionFlutterPlatform.instance.refreshPlayback();
+  }
+
+  Future<AccsResponse> getPlaybackSnapshot(String outputPath) {
+    return HikvisionFlutterPlatform.instance
+        .getPlaybackSnapshot(SnapshotRequest(
+      outputPath: outputPath,
+      imageType: 'jpg',
+    ));
+  }
+
+  Future<AccsResponse> playPlaybackFast() {
+    return HikvisionFlutterPlatform.instance.playPlaybackFast();
+  }
+
+  Future<AccsResponse> playPlaybackSlow() {
+    return HikvisionFlutterPlatform.instance.playPlaybackSlow();
+  }
+
+  Future<AccsResponse> playPlaybackNormalSpeed() {
+    return HikvisionFlutterPlatform.instance.playPlaybackNormalSpeed();
+  }
+
+  Future<AccsResponse> openPlaybackSound() {
+    return HikvisionFlutterPlatform.instance.openPlaybackSound();
+  }
+
+  Future<AccsResponse> closePlaybackSound() {
+    return HikvisionFlutterPlatform.instance.closePlaybackSound();
+  }
+
+  // Future<AccsResponse> setPlaybackVolume(int volumePercent) {
+  //   return HikvisionFlutterPlatform.instance.setPlaybackVolume(volumePercent);
+  // }
+
+  /// Search file in time range
+  /// DateTime format: yyyy/MM/dd HH:mm:ss
+  Future<SearchResponse> searchPlaybackFilesInRange(
+      String fromTime, String toTime) {
+    assert(fromTime.compareTo(toTime) <= 0,
+        'FROM time must be less than or equals to TO time');
+
+    return HikvisionFlutterPlatform.instance.searchPlaybackFilesInRange(
+        SearchRequest(timeFrom: fromTime, timeTo: toTime));
   }
 }

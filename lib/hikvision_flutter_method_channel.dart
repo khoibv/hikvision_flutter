@@ -9,14 +9,11 @@ class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final sdk = HikvisionSdk();
-  // final methodChannel = const MethodChannel('hikvision_flutter');
 
   @override
   Future<AccsResponse> initSdk() async {
-    // final result = await methodChannel.invokeMethod<bool>('initSdk');
     var result = await sdk.initialize();
-    // var logContent = jsonEncode(result);
-    print(
+    _log(
         'initialized, result {status: ${result.status}, errorMessage: ${result.errorMessage}}');
     return result;
   }
@@ -24,7 +21,7 @@ class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
   @override
   Future<AccsResponse> login(
       String username, String pass, String ip, String port) async {
-    print('Starting login with $username:$pass@$ip:$port');
+    _log('Starting login with $username:$pass@$ip:$port');
     var result = await sdk.login(LoginRequest(
       ip: ip,
       port: int.parse(port),
@@ -38,13 +35,11 @@ class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
   }
 
   @override
-  Widget cameraView(String userID, String startChan) {
+  Widget initCamera() {
     const String viewType =
         'vn.zensho.hikvision.hikvision_flutter.platformView';
     // Pass parameters to the platform side.
     final Map<String, dynamic> creationParams = <String, dynamic>{};
-    creationParams['userId'] = userID;
-    creationParams['startChan'] = startChan;
     return UiKitView(
       viewType: viewType,
       layoutDirection: TextDirection.ltr,
@@ -55,34 +50,77 @@ class MethodChannelHikvisionFlutter extends HikvisionFlutterPlatform {
 
   @override
   Future<AccsResponse> startLive() async {
-    print('Starting live');
     return await sdk.startLive();
   }
 
   @override
   Future<AccsResponse> stopLive() async {
-    print('Stopping live');
-
     return await sdk.stopLive();
   }
 
   @override
   Future<AccsResponse> startPlayback(PlaybackRequest request) async {
-    print('Starting playback');
     return await sdk.startPlayback(request);
   }
 
   @override
   Future<AccsResponse> pausePlayback() async {
-    print('Pause playback');
-
     return await sdk.pausePlayback();
   }
 
   @override
   Future<AccsResponse> resumePlayback() async {
-    print('Resume playback');
-
     return await sdk.resumePlayback();
+  }
+
+  @override
+  Future<AccsResponse> refreshPlayback() async {
+    return await sdk.refreshPlayback();
+  }
+
+  @override
+  Future<AccsResponse> getPlaybackSnapshot(SnapshotRequest request) async {
+    return await sdk.getPlaybackSnapshot(request);
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackFast() async {
+    return await sdk.playPlaybackFast();
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackSlow() async {
+    return await sdk.playPlaybackSlow();
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackNormalSpeed() async {
+    return await sdk.playPlaybackNormalSpeed();
+  }
+
+  @override
+  Future<AccsResponse> openPlaybackSound() async {
+    return await sdk.openPlaybackSound();
+  }
+
+  @override
+  Future<AccsResponse> closePlaybackSound() async {
+    return await sdk.closePlaybackSound();
+  }
+
+  @override
+  Future<AccsResponse> setPlaybackVolume(int volumePercent) async {
+    return await sdk.setPlaybackVolume(volumePercent);
+  }
+
+  /// Search file in time range
+  @override
+  Future<SearchResponse> searchPlaybackFilesInRange(
+      SearchRequest request) async {
+    return await sdk.searchPlaybackFilesInRange(request);
+  }
+
+  void _log(String message) {
+    debugPrint(message);
   }
 }

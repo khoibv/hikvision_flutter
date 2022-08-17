@@ -38,7 +38,7 @@ abstract class HikvisionFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('login() has not been implemented.');
   }
 
-  Widget cameraView(String userID, String startChan) {
+  Widget initCamera() {
     throw UnimplementedError('cameraView() has not been implemented.');
   }
 
@@ -60,5 +60,44 @@ abstract class HikvisionFlutterPlatform extends PlatformInterface {
 
   Future<AccsResponse> resumePlayback() {
     throw UnimplementedError('resumePlayback() has not been implemented.');
+  }
+
+  Future<AccsResponse> refreshPlayback() {
+    throw UnimplementedError('refreshPlayback() has not been implemented.');
+  }
+
+  Future<AccsResponse> getPlaybackSnapshot(SnapshotRequest request) {
+    throw UnimplementedError('getPlaybackSnapshot() has not been implemented.');
+  }
+
+  Future<AccsResponse> playPlaybackFast() {
+    throw UnimplementedError('playPlaybackFast() has not been implemented.');
+  }
+
+  Future<AccsResponse> playPlaybackSlow() {
+    throw UnimplementedError('playPlaybackSlow() has not been implemented.');
+  }
+
+  Future<AccsResponse> playPlaybackNormalSpeed() {
+    throw UnimplementedError(
+        'playPlaybackNormalSpeed() has not been implemented.');
+  }
+
+  Future<AccsResponse> openPlaybackSound() {
+    throw UnimplementedError('openPlaybackSound() has not been implemented.');
+  }
+
+  Future<AccsResponse> closePlaybackSound() {
+    throw UnimplementedError('closePlaybackSound() has not been implemented.');
+  }
+
+  Future<AccsResponse> setPlaybackVolume(int volumePercent) {
+    throw UnimplementedError('setPlaybackVolume() has not been implemented.');
+  }
+
+  /// Search file in time range
+  Future<SearchResponse> searchPlaybackFilesInRange(SearchRequest request) {
+    throw UnimplementedError(
+        'searchPlaybackFilesInRange() has not been implemented.');
   }
 }

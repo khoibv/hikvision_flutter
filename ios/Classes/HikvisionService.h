@@ -17,6 +17,7 @@
 // ============================
 
 #define MAX_VIEW_NUM    4
+#define NET_DVR_PLAYAUDIOVOLUME        11//Adjust volume
 
 @property (nonatomic) int userID;
 @property (nonatomic) int iStartChan;

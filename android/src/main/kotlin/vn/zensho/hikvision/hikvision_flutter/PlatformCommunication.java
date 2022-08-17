@@ -241,6 +241,278 @@ public class PlatformCommunication {
     }
   }
 
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SnapshotRequest {
+    private @NonNull String outputPath;
+    public @NonNull String getOutputPath() { return outputPath; }
+    public void setOutputPath(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"outputPath\" is null.");
+      }
+      this.outputPath = setterArg;
+    }
+
+    private @NonNull String imageType;
+    public @NonNull String getImageType() { return imageType; }
+    public void setImageType(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"imageType\" is null.");
+      }
+      this.imageType = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private SnapshotRequest() {}
+    public static final class Builder {
+      private @Nullable String outputPath;
+      public @NonNull Builder setOutputPath(@NonNull String setterArg) {
+        this.outputPath = setterArg;
+        return this;
+      }
+      private @Nullable String imageType;
+      public @NonNull Builder setImageType(@NonNull String setterArg) {
+        this.imageType = setterArg;
+        return this;
+      }
+      public @NonNull SnapshotRequest build() {
+        SnapshotRequest pigeonReturn = new SnapshotRequest();
+        pigeonReturn.setOutputPath(outputPath);
+        pigeonReturn.setImageType(imageType);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("outputPath", outputPath);
+      toMapResult.put("imageType", imageType);
+      return toMapResult;
+    }
+    static @NonNull SnapshotRequest fromMap(@NonNull Map<String, Object> map) {
+      SnapshotRequest pigeonResult = new SnapshotRequest();
+      Object outputPath = map.get("outputPath");
+      pigeonResult.setOutputPath((String)outputPath);
+      Object imageType = map.get("imageType");
+      pigeonResult.setImageType((String)imageType);
+      return pigeonResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SearchRequest {
+    private @NonNull String timeFrom;
+    public @NonNull String getTimeFrom() { return timeFrom; }
+    public void setTimeFrom(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"timeFrom\" is null.");
+      }
+      this.timeFrom = setterArg;
+    }
+
+    private @NonNull String timeTo;
+    public @NonNull String getTimeTo() { return timeTo; }
+    public void setTimeTo(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"timeTo\" is null.");
+      }
+      this.timeTo = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private SearchRequest() {}
+    public static final class Builder {
+      private @Nullable String timeFrom;
+      public @NonNull Builder setTimeFrom(@NonNull String setterArg) {
+        this.timeFrom = setterArg;
+        return this;
+      }
+      private @Nullable String timeTo;
+      public @NonNull Builder setTimeTo(@NonNull String setterArg) {
+        this.timeTo = setterArg;
+        return this;
+      }
+      public @NonNull SearchRequest build() {
+        SearchRequest pigeonReturn = new SearchRequest();
+        pigeonReturn.setTimeFrom(timeFrom);
+        pigeonReturn.setTimeTo(timeTo);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("timeFrom", timeFrom);
+      toMapResult.put("timeTo", timeTo);
+      return toMapResult;
+    }
+    static @NonNull SearchRequest fromMap(@NonNull Map<String, Object> map) {
+      SearchRequest pigeonResult = new SearchRequest();
+      Object timeFrom = map.get("timeFrom");
+      pigeonResult.setTimeFrom((String)timeFrom);
+      Object timeTo = map.get("timeTo");
+      pigeonResult.setTimeTo((String)timeTo);
+      return pigeonResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class MatchItem {
+    private @NonNull String from;
+    public @NonNull String getFrom() { return from; }
+    public void setFrom(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"from\" is null.");
+      }
+      this.from = setterArg;
+    }
+
+    private @NonNull String to;
+    public @NonNull String getTo() { return to; }
+    public void setTo(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"to\" is null.");
+      }
+      this.to = setterArg;
+    }
+
+    private @NonNull String filename;
+    public @NonNull String getFilename() { return filename; }
+    public void setFilename(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"filename\" is null.");
+      }
+      this.filename = setterArg;
+    }
+
+    private @NonNull Long filesize;
+    public @NonNull Long getFilesize() { return filesize; }
+    public void setFilesize(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"filesize\" is null.");
+      }
+      this.filesize = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private MatchItem() {}
+    public static final class Builder {
+      private @Nullable String from;
+      public @NonNull Builder setFrom(@NonNull String setterArg) {
+        this.from = setterArg;
+        return this;
+      }
+      private @Nullable String to;
+      public @NonNull Builder setTo(@NonNull String setterArg) {
+        this.to = setterArg;
+        return this;
+      }
+      private @Nullable String filename;
+      public @NonNull Builder setFilename(@NonNull String setterArg) {
+        this.filename = setterArg;
+        return this;
+      }
+      private @Nullable Long filesize;
+      public @NonNull Builder setFilesize(@NonNull Long setterArg) {
+        this.filesize = setterArg;
+        return this;
+      }
+      public @NonNull MatchItem build() {
+        MatchItem pigeonReturn = new MatchItem();
+        pigeonReturn.setFrom(from);
+        pigeonReturn.setTo(to);
+        pigeonReturn.setFilename(filename);
+        pigeonReturn.setFilesize(filesize);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("from", from);
+      toMapResult.put("to", to);
+      toMapResult.put("filename", filename);
+      toMapResult.put("filesize", filesize);
+      return toMapResult;
+    }
+    static @NonNull MatchItem fromMap(@NonNull Map<String, Object> map) {
+      MatchItem pigeonResult = new MatchItem();
+      Object from = map.get("from");
+      pigeonResult.setFrom((String)from);
+      Object to = map.get("to");
+      pigeonResult.setTo((String)to);
+      Object filename = map.get("filename");
+      pigeonResult.setFilename((String)filename);
+      Object filesize = map.get("filesize");
+      pigeonResult.setFilesize((filesize == null) ? null : ((filesize instanceof Integer) ? (Integer)filesize : (Long)filesize));
+      return pigeonResult;
+    }
+  }
+
+  /** Generated class from Pigeon that represents data sent in messages. */
+  public static class SearchResponse {
+    private @NonNull String status;
+    public @NonNull String getStatus() { return status; }
+    public void setStatus(@NonNull String setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"status\" is null.");
+      }
+      this.status = setterArg;
+    }
+
+    private @Nullable String errorMessage;
+    public @Nullable String getErrorMessage() { return errorMessage; }
+    public void setErrorMessage(@Nullable String setterArg) {
+      this.errorMessage = setterArg;
+    }
+
+    private @Nullable List<MatchItem> matchList;
+    public @Nullable List<MatchItem> getMatchList() { return matchList; }
+    public void setMatchList(@Nullable List<MatchItem> setterArg) {
+      this.matchList = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private SearchResponse() {}
+    public static final class Builder {
+      private @Nullable String status;
+      public @NonNull Builder setStatus(@NonNull String setterArg) {
+        this.status = setterArg;
+        return this;
+      }
+      private @Nullable String errorMessage;
+      public @NonNull Builder setErrorMessage(@Nullable String setterArg) {
+        this.errorMessage = setterArg;
+        return this;
+      }
+      private @Nullable List<MatchItem> matchList;
+      public @NonNull Builder setMatchList(@Nullable List<MatchItem> setterArg) {
+        this.matchList = setterArg;
+        return this;
+      }
+      public @NonNull SearchResponse build() {
+        SearchResponse pigeonReturn = new SearchResponse();
+        pigeonReturn.setStatus(status);
+        pigeonReturn.setErrorMessage(errorMessage);
+        pigeonReturn.setMatchList(matchList);
+        return pigeonReturn;
+      }
+    }
+    @NonNull Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("status", status);
+      toMapResult.put("errorMessage", errorMessage);
+      toMapResult.put("matchList", matchList);
+      return toMapResult;
+    }
+    static @NonNull SearchResponse fromMap(@NonNull Map<String, Object> map) {
+      SearchResponse pigeonResult = new SearchResponse();
+      Object status = map.get("status");
+      pigeonResult.setStatus((String)status);
+      Object errorMessage = map.get("errorMessage");
+      pigeonResult.setErrorMessage((String)errorMessage);
+      Object matchList = map.get("matchList");
+      pigeonResult.setMatchList((List<MatchItem>)matchList);
+      return pigeonResult;
+    }
+  }
+
   public interface Result<T> {
     void success(T result);
     void error(Throwable error);
@@ -258,7 +530,19 @@ public class PlatformCommunication {
           return LoginRequest.fromMap((Map<String, Object>) readValue(buffer));
         
         case (byte)130:         
+          return MatchItem.fromMap((Map<String, Object>) readValue(buffer));
+        
+        case (byte)131:         
           return PlaybackRequest.fromMap((Map<String, Object>) readValue(buffer));
+        
+        case (byte)132:         
+          return SearchRequest.fromMap((Map<String, Object>) readValue(buffer));
+        
+        case (byte)133:         
+          return SearchResponse.fromMap((Map<String, Object>) readValue(buffer));
+        
+        case (byte)134:         
+          return SnapshotRequest.fromMap((Map<String, Object>) readValue(buffer));
         
         default:        
           return super.readValueOfType(type, buffer);
@@ -275,9 +559,25 @@ public class PlatformCommunication {
         stream.write(129);
         writeValue(stream, ((LoginRequest) value).toMap());
       } else 
-      if (value instanceof PlaybackRequest) {
+      if (value instanceof MatchItem) {
         stream.write(130);
+        writeValue(stream, ((MatchItem) value).toMap());
+      } else 
+      if (value instanceof PlaybackRequest) {
+        stream.write(131);
         writeValue(stream, ((PlaybackRequest) value).toMap());
+      } else 
+      if (value instanceof SearchRequest) {
+        stream.write(132);
+        writeValue(stream, ((SearchRequest) value).toMap());
+      } else 
+      if (value instanceof SearchResponse) {
+        stream.write(133);
+        writeValue(stream, ((SearchResponse) value).toMap());
+      } else 
+      if (value instanceof SnapshotRequest) {
+        stream.write(134);
+        writeValue(stream, ((SnapshotRequest) value).toMap());
       } else 
 {
         super.writeValue(stream, value);
@@ -296,14 +596,14 @@ public class PlatformCommunication {
     void pausePlayback(Result<AccsResponse> result);
     void resumePlayback(Result<AccsResponse> result);
     void refreshPlayback(Result<AccsResponse> result);
-    void getPlaybackSnapshot(Result<AccsResponse> result);
+    void getPlaybackSnapshot(@NonNull SnapshotRequest request, Result<AccsResponse> result);
     void playPlaybackFast(Result<AccsResponse> result);
     void playPlaybackSlow(Result<AccsResponse> result);
     void playPlaybackNormalSpeed(Result<AccsResponse> result);
     void openPlaybackSound(Result<AccsResponse> result);
     void closePlaybackSound(Result<AccsResponse> result);
     void setPlaybackVolume(@NonNull Long volumePercent, Result<AccsResponse> result);
-    void searchPlaybackFilesInRange(@NonNull String fromTime, @NonNull String toTime, Result<AccsResponse> result);
+    void searchPlaybackFilesInRange(@NonNull SearchRequest request, Result<SearchResponse> result);
 
     /** The codec used by HikvisionSdk. */
     static MessageCodec<Object> getCodec() {
@@ -590,6 +890,11 @@ public class PlatformCommunication {
           channel.setMessageHandler((message, reply) -> {
             Map<String, Object> wrapped = new HashMap<>();
             try {
+              ArrayList<Object> args = (ArrayList<Object>)message;
+              SnapshotRequest requestArg = (SnapshotRequest)args.get(0);
+              if (requestArg == null) {
+                throw new NullPointerException("requestArg unexpectedly null.");
+              }
               Result<AccsResponse> resultCallback = new Result<AccsResponse>() {
                 public void success(AccsResponse result) {
                   wrapped.put("result", result);
@@ -601,7 +906,7 @@ public class PlatformCommunication {
                 }
               };
 
-              api.getPlaybackSnapshot(resultCallback);
+              api.getPlaybackSnapshot(requestArg, resultCallback);
             }
             catch (Error | RuntimeException exception) {
               wrapped.put("error", wrapError(exception));
@@ -799,16 +1104,12 @@ public class PlatformCommunication {
             Map<String, Object> wrapped = new HashMap<>();
             try {
               ArrayList<Object> args = (ArrayList<Object>)message;
-              String fromTimeArg = (String)args.get(0);
-              if (fromTimeArg == null) {
-                throw new NullPointerException("fromTimeArg unexpectedly null.");
+              SearchRequest requestArg = (SearchRequest)args.get(0);
+              if (requestArg == null) {
+                throw new NullPointerException("requestArg unexpectedly null.");
               }
-              String toTimeArg = (String)args.get(1);
-              if (toTimeArg == null) {
-                throw new NullPointerException("toTimeArg unexpectedly null.");
-              }
-              Result<AccsResponse> resultCallback = new Result<AccsResponse>() {
-                public void success(AccsResponse result) {
+              Result<SearchResponse> resultCallback = new Result<SearchResponse>() {
+                public void success(SearchResponse result) {
                   wrapped.put("result", result);
                   reply.reply(wrapped);
                 }
@@ -818,7 +1119,7 @@ public class PlatformCommunication {
                 }
               };
 
-              api.searchPlaybackFilesInRange(fromTimeArg, toTimeArg, resultCallback);
+              api.searchPlaybackFilesInRange(requestArg, resultCallback);
             }
             catch (Error | RuntimeException exception) {
               wrapped.put("error", wrapError(exception));

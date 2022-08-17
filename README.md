@@ -24,8 +24,8 @@ Yêu cầu chung: Tất cả các methods, params gửi/nhận giữa Flutter v�
 - bắt buộc phải sử dụng ObjectiveC++, không thể dùng swift (swift không build được/build lỗi)
 - tất cả các file .m (ObjectiveC) đổi tên thành .mm (ObjectiveC++) (chú ý: file 'example/ios/Runner/GeneratedPluginRegistrant.m' cũng cần đổi đuôi)
 - tất cả các file header của sdk được copy vào folder project/ios/Classes.
-- tất cả các file library được copy vào folder project/ios/lib
-- tất cả các file library phải được bắt đầu bằng `lib`. vd: libHCNetSDK.a, nếu không thì rename.
+- tất cả các file library được copy vào folder `project/ios/lib`
+- tất cả các file library phải được bắt đầu bằng `lib`. vd: `libHCNetSDK.a`, nếu không thì rename.
 - file podspec cần thêm các dòng này:
 
 ```

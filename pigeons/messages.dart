@@ -36,6 +36,54 @@ class PlaybackRequest {
   });
 }
 
+class SnapshotRequest {
+  String outputPath;
+  String imageType; // jpg, bmp
+  SnapshotRequest({
+    required this.outputPath,
+    required this.imageType,
+  });
+}
+
+class SearchRequest {
+  // DateTime format: yyyy/MM/dd HH:mm:ss
+  String timeFrom;
+  // DateTime format: yyyy/MM/dd HH:mm:ss
+  String timeTo;
+
+  SearchRequest({
+    required this.timeFrom,
+    required this.timeTo,
+  });
+}
+
+class MatchItem {
+  String from;
+  String to;
+  String filename;
+  int filesize;
+
+  MatchItem({
+    required this.from,
+    required this.to,
+    required this.filename,
+    required this.filesize,
+  });
+}
+
+// Note: pigeon does not support inheritance, so web must duplicate code here
+class SearchResponse {
+  String status;
+  String? errorMessage;
+  List<MatchItem?>? matchList;
+
+  SearchResponse({
+    this.status = 'OK',
+    this.errorMessage,
+    this.matchList,
+  });
+}
+
 @HostApi()
 abstract class HikvisionSdk {
   // ===============================
@@ -88,8 +136,8 @@ abstract class HikvisionSdk {
   AccsResponse refreshPlayback();
 
   @async
-  @ObjCSelector('getPlaybackSnapshot')
-  AccsResponse getPlaybackSnapshot();
+  @ObjCSelector('getPlaybackSnapshot:')
+  AccsResponse getPlaybackSnapshot(SnapshotRequest request);
 
   @async
   @ObjCSelector('playPlaybackFast')
@@ -114,6 +162,6 @@ abstract class HikvisionSdk {
   /// Search file in time range
   /// DateTime format: yyyy/MM/dd HH:mm:ss
   @async
-  @ObjCSelector('searchPlaybackFilesInRange:to:')
-  AccsResponse searchPlaybackFilesInRange(String fromTime, String toTime);
+  @ObjCSelector('searchPlaybackFilesInRange:')
+  SearchResponse searchPlaybackFilesInRange(SearchRequest request);
 }

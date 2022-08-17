@@ -15,49 +15,95 @@ class MockHikvisionFlutterPlatform
   @override
   Future<AccsResponse> login(
       String username, String pass, String ip, String port) {
-    // TODO: implement login
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> initSdk() {
-    // TODO: implement initSdk
     throw UnimplementedError();
   }
 
   @override
-  Widget cameraView(String userID, String startChan) {
-    // TODO: implement cameraView
+  Widget initCamera() {
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> startLive() {
-    // TODO: implement startLive
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> stopLive() {
-    // TODO: implement stopLive
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> startPlayback(PlaybackRequest request) {
-    // TODO: implement startPlayback
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> pausePlayback() {
-    // TODO: implement pausePlayback
     throw UnimplementedError();
   }
 
   @override
   Future<AccsResponse> resumePlayback() {
-    // TODO: implement resumePlayback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> closePlaybackSound() {
+    // TODO: implement closePlaybackSound
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> getPlaybackSnapshot(SnapshotRequest request) {
+    // TODO: implement getPlaybackSnapshot
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> openPlaybackSound() {
+    // TODO: implement openPlaybackSound
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackFast() {
+    // TODO: implement playPlaybackFast
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackNormalSpeed() {
+    // TODO: implement playPlaybackNormalSpeed
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> playPlaybackSlow() {
+    // TODO: implement playPlaybackSlow
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> refreshPlayback() {
+    // TODO: implement refreshPlayback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SearchResponse> searchPlaybackFilesInRange(SearchRequest request) {
+    // TODO: implement searchPlaybackFilesInRange
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AccsResponse> setPlaybackVolume(int volumePercent) {
+    // TODO: implement setPlaybackVolume
     throw UnimplementedError();
   }
 }

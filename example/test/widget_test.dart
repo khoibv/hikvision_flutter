@@ -8,12 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:hikvision_flutter_example/main.dart';
+import 'package:hikvision_flutter_example/playback_screen.dart';
 
 void main() {
   testWidgets('Verify Platform version', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const PlaybackScreen());
 
     // Verify that platform version is retrieved.
     expect(

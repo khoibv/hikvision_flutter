@@ -95,6 +95,118 @@ class PlaybackRequest {
   }
 }
 
+class SnapshotRequest {
+  SnapshotRequest({
+    required this.outputPath,
+    required this.imageType,
+  });
+
+  String outputPath;
+  String imageType;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['outputPath'] = outputPath;
+    pigeonMap['imageType'] = imageType;
+    return pigeonMap;
+  }
+
+  static SnapshotRequest decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return SnapshotRequest(
+      outputPath: pigeonMap['outputPath']! as String,
+      imageType: pigeonMap['imageType']! as String,
+    );
+  }
+}
+
+class SearchRequest {
+  SearchRequest({
+    required this.timeFrom,
+    required this.timeTo,
+  });
+
+  String timeFrom;
+  String timeTo;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['timeFrom'] = timeFrom;
+    pigeonMap['timeTo'] = timeTo;
+    return pigeonMap;
+  }
+
+  static SearchRequest decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return SearchRequest(
+      timeFrom: pigeonMap['timeFrom']! as String,
+      timeTo: pigeonMap['timeTo']! as String,
+    );
+  }
+}
+
+class MatchItem {
+  MatchItem({
+    required this.from,
+    required this.to,
+    required this.filename,
+    required this.filesize,
+  });
+
+  String from;
+  String to;
+  String filename;
+  int filesize;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['from'] = from;
+    pigeonMap['to'] = to;
+    pigeonMap['filename'] = filename;
+    pigeonMap['filesize'] = filesize;
+    return pigeonMap;
+  }
+
+  static MatchItem decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return MatchItem(
+      from: pigeonMap['from']! as String,
+      to: pigeonMap['to']! as String,
+      filename: pigeonMap['filename']! as String,
+      filesize: pigeonMap['filesize']! as int,
+    );
+  }
+}
+
+class SearchResponse {
+  SearchResponse({
+    required this.status,
+    this.errorMessage,
+    this.matchList,
+  });
+
+  String status;
+  String? errorMessage;
+  List<MatchItem?>? matchList;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['status'] = status;
+    pigeonMap['errorMessage'] = errorMessage;
+    pigeonMap['matchList'] = matchList;
+    return pigeonMap;
+  }
+
+  static SearchResponse decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return SearchResponse(
+      status: pigeonMap['status']! as String,
+      errorMessage: pigeonMap['errorMessage'] as String?,
+      matchList: (pigeonMap['matchList'] as List<Object?>?)?.cast<MatchItem?>(),
+    );
+  }
+}
+
 class _HikvisionSdkCodec extends StandardMessageCodec {
   const _HikvisionSdkCodec();
   @override
@@ -107,8 +219,24 @@ class _HikvisionSdkCodec extends StandardMessageCodec {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
     } else 
-    if (value is PlaybackRequest) {
+    if (value is MatchItem) {
       buffer.putUint8(130);
+      writeValue(buffer, value.encode());
+    } else 
+    if (value is PlaybackRequest) {
+      buffer.putUint8(131);
+      writeValue(buffer, value.encode());
+    } else 
+    if (value is SearchRequest) {
+      buffer.putUint8(132);
+      writeValue(buffer, value.encode());
+    } else 
+    if (value is SearchResponse) {
+      buffer.putUint8(133);
+      writeValue(buffer, value.encode());
+    } else 
+    if (value is SnapshotRequest) {
+      buffer.putUint8(134);
       writeValue(buffer, value.encode());
     } else 
 {
@@ -125,7 +253,19 @@ class _HikvisionSdkCodec extends StandardMessageCodec {
         return LoginRequest.decode(readValue(buffer)!);
       
       case 130:       
+        return MatchItem.decode(readValue(buffer)!);
+      
+      case 131:       
         return PlaybackRequest.decode(readValue(buffer)!);
+      
+      case 132:       
+        return SearchRequest.decode(readValue(buffer)!);
+      
+      case 133:       
+        return SearchResponse.decode(readValue(buffer)!);
+      
+      case 134:       
+        return SnapshotRequest.decode(readValue(buffer)!);
       
       default:      
         return super.readValueOfType(type, buffer);
@@ -387,11 +527,11 @@ class HikvisionSdk {
     }
   }
 
-  Future<AccsResponse> getPlaybackSnapshot() async {
+  Future<AccsResponse> getPlaybackSnapshot(SnapshotRequest arg_request) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.HikvisionSdk.getPlaybackSnapshot', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
-        await channel.send(null) as Map<Object?, Object?>?;
+        await channel.send(<Object?>[arg_request]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -576,11 +716,11 @@ class HikvisionSdk {
     }
   }
 
-  Future<AccsResponse> searchPlaybackFilesInRange(String arg_fromTime, String arg_toTime) async {
+  Future<SearchResponse> searchPlaybackFilesInRange(SearchRequest arg_request) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.HikvisionSdk.searchPlaybackFilesInRange', codec, binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
-        await channel.send(<Object?>[arg_fromTime, arg_toTime]) as Map<Object?, Object?>?;
+        await channel.send(<Object?>[arg_request]) as Map<Object?, Object?>?;
     if (replyMap == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -599,7 +739,7 @@ class HikvisionSdk {
         message: 'Host platform returned null value for non-null return value.',
       );
     } else {
-      return (replyMap['result'] as AccsResponse?)!;
+      return (replyMap['result'] as SearchResponse?)!;
     }
   }
 }

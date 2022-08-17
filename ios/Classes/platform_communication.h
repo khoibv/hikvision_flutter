@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 @class LoginRequest;
 @class AccsResponse;
 @class PlaybackRequest;
+@class SnapshotRequest;
+@class SearchRequest;
+@class MatchItem;
+@class SearchResponse;
 
 @interface LoginRequest : NSObject
 /// `init` unavailable to enforce nonnull fields, see the `make` class method.
@@ -45,6 +49,48 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy) NSString * timeTo;
 @end
 
+@interface SnapshotRequest : NSObject
+/// `init` unavailable to enforce nonnull fields, see the `make` class method.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)makeWithOutputPath:(NSString *)outputPath
+    imageType:(NSString *)imageType;
+@property(nonatomic, copy) NSString * outputPath;
+@property(nonatomic, copy) NSString * imageType;
+@end
+
+@interface SearchRequest : NSObject
+/// `init` unavailable to enforce nonnull fields, see the `make` class method.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)makeWithTimeFrom:(NSString *)timeFrom
+    timeTo:(NSString *)timeTo;
+@property(nonatomic, copy) NSString * timeFrom;
+@property(nonatomic, copy) NSString * timeTo;
+@end
+
+@interface MatchItem : NSObject
+/// `init` unavailable to enforce nonnull fields, see the `make` class method.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)makeWithFrom:(NSString *)from
+    to:(NSString *)to
+    filename:(NSString *)filename
+    filesize:(NSNumber *)filesize;
+@property(nonatomic, copy) NSString * from;
+@property(nonatomic, copy) NSString * to;
+@property(nonatomic, copy) NSString * filename;
+@property(nonatomic, strong) NSNumber * filesize;
+@end
+
+@interface SearchResponse : NSObject
+/// `init` unavailable to enforce nonnull fields, see the `make` class method.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)makeWithStatus:(NSString *)status
+    errorMessage:(nullable NSString *)errorMessage
+    matchList:(nullable NSArray<MatchItem *> *)matchList;
+@property(nonatomic, copy) NSString * status;
+@property(nonatomic, copy, nullable) NSString * errorMessage;
+@property(nonatomic, strong, nullable) NSArray<MatchItem *> * matchList;
+@end
+
 /// The codec used by HikvisionSdk.
 NSObject<FlutterMessageCodec> *HikvisionSdkGetCodec(void);
 
@@ -58,14 +104,14 @@ NSObject<FlutterMessageCodec> *HikvisionSdkGetCodec(void);
 - (void)pausePlayback:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)resumePlayback:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)refreshPlayback:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
-- (void)getPlaybackSnapshot:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
+- (void)getPlaybackSnapshot:(SnapshotRequest *)request completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)playPlaybackFast:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)playPlaybackSlow:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)playPlaybackNormalSpeed:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)openPlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)closePlaybackSound:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
 - (void)setPlaybackVolume:(NSNumber *)volumePercent completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
-- (void)searchPlaybackFilesInRange:(NSString *)fromTime to:(NSString *)toTime completion:(void(^)(AccsResponse *_Nullable, FlutterError *_Nullable))completion;
+- (void)searchPlaybackFilesInRange:(SearchRequest *)request completion:(void(^)(SearchResponse *_Nullable, FlutterError *_Nullable))completion;
 @end
 
 extern void HikvisionSdkSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<HikvisionSdk> *_Nullable api);

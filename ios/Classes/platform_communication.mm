@@ -43,6 +43,22 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 + (PlaybackRequest *)fromMap:(NSDictionary *)dict;
 - (NSDictionary *)toMap;
 @end
+@interface SnapshotRequest ()
++ (SnapshotRequest *)fromMap:(NSDictionary *)dict;
+- (NSDictionary *)toMap;
+@end
+@interface SearchRequest ()
++ (SearchRequest *)fromMap:(NSDictionary *)dict;
+- (NSDictionary *)toMap;
+@end
+@interface MatchItem ()
++ (MatchItem *)fromMap:(NSDictionary *)dict;
+- (NSDictionary *)toMap;
+@end
+@interface SearchResponse ()
++ (SearchResponse *)fromMap:(NSDictionary *)dict;
+- (NSDictionary *)toMap;
+@end
 
 @implementation LoginRequest
 + (instancetype)makeWithIp:(NSString *)ip
@@ -130,6 +146,115 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
 }
 @end
 
+@implementation SnapshotRequest
++ (instancetype)makeWithOutputPath:(NSString *)outputPath
+    imageType:(NSString *)imageType {
+  SnapshotRequest* pigeonResult = [[SnapshotRequest alloc] init];
+  pigeonResult.outputPath = outputPath;
+  pigeonResult.imageType = imageType;
+  return pigeonResult;
+}
++ (SnapshotRequest *)fromMap:(NSDictionary *)dict {
+  SnapshotRequest *pigeonResult = [[SnapshotRequest alloc] init];
+  pigeonResult.outputPath = GetNullableObject(dict, @"outputPath");
+  NSAssert(pigeonResult.outputPath != nil, @"");
+  pigeonResult.imageType = GetNullableObject(dict, @"imageType");
+  NSAssert(pigeonResult.imageType != nil, @"");
+  return pigeonResult;
+}
+- (NSDictionary *)toMap {
+  return @{
+    @"outputPath" : (self.outputPath ?: [NSNull null]),
+    @"imageType" : (self.imageType ?: [NSNull null]),
+  };
+}
+@end
+
+@implementation SearchRequest
++ (instancetype)makeWithTimeFrom:(NSString *)timeFrom
+    timeTo:(NSString *)timeTo {
+  SearchRequest* pigeonResult = [[SearchRequest alloc] init];
+  pigeonResult.timeFrom = timeFrom;
+  pigeonResult.timeTo = timeTo;
+  return pigeonResult;
+}
++ (SearchRequest *)fromMap:(NSDictionary *)dict {
+  SearchRequest *pigeonResult = [[SearchRequest alloc] init];
+  pigeonResult.timeFrom = GetNullableObject(dict, @"timeFrom");
+  NSAssert(pigeonResult.timeFrom != nil, @"");
+  pigeonResult.timeTo = GetNullableObject(dict, @"timeTo");
+  NSAssert(pigeonResult.timeTo != nil, @"");
+  return pigeonResult;
+}
+- (NSDictionary *)toMap {
+  return @{
+    @"timeFrom" : (self.timeFrom ?: [NSNull null]),
+    @"timeTo" : (self.timeTo ?: [NSNull null]),
+  };
+}
+@end
+
+@implementation MatchItem
++ (instancetype)makeWithFrom:(NSString *)from
+    to:(NSString *)to
+    filename:(NSString *)filename
+    filesize:(NSNumber *)filesize {
+  MatchItem* pigeonResult = [[MatchItem alloc] init];
+  pigeonResult.from = from;
+  pigeonResult.to = to;
+  pigeonResult.filename = filename;
+  pigeonResult.filesize = filesize;
+  return pigeonResult;
+}
++ (MatchItem *)fromMap:(NSDictionary *)dict {
+  MatchItem *pigeonResult = [[MatchItem alloc] init];
+  pigeonResult.from = GetNullableObject(dict, @"from");
+  NSAssert(pigeonResult.from != nil, @"");
+  pigeonResult.to = GetNullableObject(dict, @"to");
+  NSAssert(pigeonResult.to != nil, @"");
+  pigeonResult.filename = GetNullableObject(dict, @"filename");
+  NSAssert(pigeonResult.filename != nil, @"");
+  pigeonResult.filesize = GetNullableObject(dict, @"filesize");
+  NSAssert(pigeonResult.filesize != nil, @"");
+  return pigeonResult;
+}
+- (NSDictionary *)toMap {
+  return @{
+    @"from" : (self.from ?: [NSNull null]),
+    @"to" : (self.to ?: [NSNull null]),
+    @"filename" : (self.filename ?: [NSNull null]),
+    @"filesize" : (self.filesize ?: [NSNull null]),
+  };
+}
+@end
+
+@implementation SearchResponse
++ (instancetype)makeWithStatus:(NSString *)status
+    errorMessage:(nullable NSString *)errorMessage
+    matchList:(nullable NSArray<MatchItem *> *)matchList {
+  SearchResponse* pigeonResult = [[SearchResponse alloc] init];
+  pigeonResult.status = status;
+  pigeonResult.errorMessage = errorMessage;
+  pigeonResult.matchList = matchList;
+  return pigeonResult;
+}
++ (SearchResponse *)fromMap:(NSDictionary *)dict {
+  SearchResponse *pigeonResult = [[SearchResponse alloc] init];
+  pigeonResult.status = GetNullableObject(dict, @"status");
+  NSAssert(pigeonResult.status != nil, @"");
+  pigeonResult.errorMessage = GetNullableObject(dict, @"errorMessage");
+  pigeonResult.matchList = GetNullableObject(dict, @"matchList");
+  return pigeonResult;
+}
+- (NSDictionary *)toMap {
+  return @{
+    @"status" : (self.status ?: [NSNull null]),
+    @"errorMessage" : (self.errorMessage ?: [NSNull null]),
+    @"matchList" : (self.matchList ?: [NSNull null]),
+  };
+}
+@end
+
 @interface HikvisionSdkCodecReader : FlutterStandardReader
 @end
 @implementation HikvisionSdkCodecReader
@@ -143,7 +268,19 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
       return [LoginRequest fromMap:[self readValue]];
     
     case 130:     
+      return [MatchItem fromMap:[self readValue]];
+    
+    case 131:     
       return [PlaybackRequest fromMap:[self readValue]];
+    
+    case 132:     
+      return [SearchRequest fromMap:[self readValue]];
+    
+    case 133:     
+      return [SearchResponse fromMap:[self readValue]];
+    
+    case 134:     
+      return [SnapshotRequest fromMap:[self readValue]];
     
     default:    
       return [super readValueOfType:type];
@@ -165,8 +302,24 @@ static id GetNullableObjectAtIndex(NSArray* array, NSInteger key) {
     [self writeByte:129];
     [self writeValue:[value toMap]];
   } else 
-  if ([value isKindOfClass:[PlaybackRequest class]]) {
+  if ([value isKindOfClass:[MatchItem class]]) {
     [self writeByte:130];
+    [self writeValue:[value toMap]];
+  } else 
+  if ([value isKindOfClass:[PlaybackRequest class]]) {
+    [self writeByte:131];
+    [self writeValue:[value toMap]];
+  } else 
+  if ([value isKindOfClass:[SearchRequest class]]) {
+    [self writeByte:132];
+    [self writeValue:[value toMap]];
+  } else 
+  if ([value isKindOfClass:[SearchResponse class]]) {
+    [self writeByte:133];
+    [self writeValue:[value toMap]];
+  } else 
+  if ([value isKindOfClass:[SnapshotRequest class]]) {
+    [self writeByte:134];
     [self writeValue:[value toMap]];
   } else 
 {
@@ -371,9 +524,11 @@ void HikvisionSdkSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<Hikv
         binaryMessenger:binaryMessenger
         codec:HikvisionSdkGetCodec()        ];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(getPlaybackSnapshot:)], @"HikvisionSdk api (%@) doesn't respond to @selector(getPlaybackSnapshot:)", api);
+      NSCAssert([api respondsToSelector:@selector(getPlaybackSnapshot:completion:)], @"HikvisionSdk api (%@) doesn't respond to @selector(getPlaybackSnapshot:completion:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        [api getPlaybackSnapshot:^(AccsResponse *_Nullable output, FlutterError *_Nullable error) {
+        NSArray *args = message;
+        SnapshotRequest *arg_request = GetNullableObjectAtIndex(args, 0);
+        [api getPlaybackSnapshot:arg_request completion:^(AccsResponse *_Nullable output, FlutterError *_Nullable error) {
           callback(wrapResult(output, error));
         }];
       }];
@@ -499,12 +654,11 @@ void HikvisionSdkSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<Hikv
         binaryMessenger:binaryMessenger
         codec:HikvisionSdkGetCodec()        ];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(searchPlaybackFilesInRange:to:completion:)], @"HikvisionSdk api (%@) doesn't respond to @selector(searchPlaybackFilesInRange:to:completion:)", api);
+      NSCAssert([api respondsToSelector:@selector(searchPlaybackFilesInRange:completion:)], @"HikvisionSdk api (%@) doesn't respond to @selector(searchPlaybackFilesInRange:completion:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
-        NSString *arg_fromTime = GetNullableObjectAtIndex(args, 0);
-        NSString *arg_toTime = GetNullableObjectAtIndex(args, 1);
-        [api searchPlaybackFilesInRange:arg_fromTime to:arg_toTime completion:^(AccsResponse *_Nullable output, FlutterError *_Nullable error) {
+        SearchRequest *arg_request = GetNullableObjectAtIndex(args, 0);
+        [api searchPlaybackFilesInRange:arg_request completion:^(SearchResponse *_Nullable output, FlutterError *_Nullable error) {
           callback(wrapResult(output, error));
         }];
       }];
